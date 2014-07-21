@@ -8,5 +8,15 @@
 
 import Foundation
 
-println("Hello, World!")
+func withInput(perLine: String -> ()) {
+    var keyboard = NSFileHandle.fileHandleWithStandardInput()
+    var inputData: NSData
+    do {
+        inputData = keyboard.availableData
+        for line in NSString(data: inputData, encoding:NSUTF8StringEncoding).componentsSeparatedByString("\n") {
+            perLine(line as NSString)
+        }
+    } while (inputData.length > 0)
+}
 
+withInput { println("\(NSDate())  \($0)") }
